@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div>
       <Navbar />
-      <h2>Welcome to the Home Page</h2>
+      <h2>Welcome to the Responsbale Page</h2>
       {/* Votre contenu principal pour la page d'accueil ici */}
     </div>
   );

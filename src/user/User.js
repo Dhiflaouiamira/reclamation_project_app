@@ -7,7 +7,6 @@ const AddUser = () => {
   const [fullname, setFullname] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState("");
@@ -27,6 +26,7 @@ const AddUser = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [poste, setPoste] = useState("");
   const [grade, setGrade] = useState("");
+
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:3002/api/users");
@@ -70,7 +70,6 @@ const AddUser = () => {
       alert("Failed to add user. Please try again later.");
     }
   };
-
 
   const handleDeleteUser = id => {
     const confirmDelete = window.confirm("Are you sure you want to delete this user?");
@@ -139,32 +138,32 @@ const AddUser = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-             <select
-        className="input-field"
-        value={grade}
-        onChange={(e) => setGrade(e.target.value)}
-      >
-        <option value="">Select Poste</option>
-        <option value="Ingénieur Principal">Ingénieur Principal</option>
-        <option value="Ingénieur Major">Ingénieur Major</option>
-        <option value="Technicien">Technicien</option>
-      </select>
-
-  <select
-        className="input-field"
-        value={poste}
-        onChange={(e) => setPoste(e.target.value)}
-      >
-        <option value="">Select poste</option>
-        <option value="Architecte Logiciel">Architecte Logiciel</option>
-        <option value="Analyste Fonctionnel">Analyste Fonctionnel</option>
-        <option value="Chef de Mission">Chef de Mission</option>
-        <option value="Chef de Projet">Chef de Projet</option>
-        <option value="Développeur">Développeur</option>
-        <option value="Testeur">Testeur</option>
-        <option value="Maintenance Applicative et Spécialiste en Gestion de Projet">Maintenance Applicative et Spécialiste en Gestion de Projet</option>
-      </select>
-
+              <select
+                className="input-field"
+                value={grade}
+                onChange={(e) => setGrade(e.target.value)}
+              >
+                <option value="">Select Grade</option>
+                <option value="Ingénieur Principal">Ingénieur Principal</option>
+                <option value="Ingénieur Major">Ingénieur Major</option>
+                <option value="Technicien">Technicien</option>
+              </select>
+              <select
+                className="input-field"
+                value={poste}
+                onChange={(e) => setPoste(e.target.value)}
+              >
+                <option value="">Select Poste</option>
+                <option value="Architecte Logiciel">Architecte Logiciel</option>
+                <option value="Analyste Fonctionnel">Analyste Fonctionnel</option>
+                <option value="Chef de Mission">Chef de Mission</option>
+                <option value="Chef de Projet">Chef de Projet</option>
+                <option value="Développeur">Développeur</option>
+                <option value="Testeur">Testeur</option>
+                <option value="Maintenance Applicative et Spécialiste en Gestion de Projet">
+                  Maintenance Applicative et Spécialiste en Gestion de Projet
+                </option>
+              </select>
               <input
                 className="input-field"
                 type="password"
@@ -182,7 +181,7 @@ const AddUser = () => {
               <input
                 className="input-field"
                 type="text"
-                placeholder="Image"
+                placeholder
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
               />
@@ -196,7 +195,7 @@ const AddUser = () => {
           </div>
         )}
 
-{showUpdateModal && (
+        {showUpdateModal && (
           <div className="modal">
             <div className="modal-content">
               <span className="close" onClick={() => setShowUpdateModal(false)}>
@@ -223,47 +222,33 @@ const AddUser = () => {
                 placeholder="Email"
                 value={updateEmail}
                 onChange={(e) => setUpdateEmail(e.target.value)}
-              /> 
-            <select
-              className="input-field"
-              value={updateGrade}
-              onChange={(e) => setUpdateGrade(e.target.value)} // corrected here
-            >
-              <option value="">Select Grade</option>
-              <option value="Ingénieur Principal">Ingénieur Principal</option>
-              <option value="Ingénieur Major">Ingénieur Major</option>
-              <option value="Technicien">Technicien</option>
-            </select>
-            <select
-              className="input-field"
-              value={updatePoste}
-              onChange={(e) => setUpdatePoste(e.target.value)} // corrected here
-            >
-              <option value="">Select Poste</option>
-              <option value="Architecte Logiciel">Architecte Logiciel</option>
-              <option value="Analyste Fonctionnel">Analyste Fonctionnel</option>
-              <option value="Chef de Mission">Chef de Mission</option>
-              <option value="Chef de Projet">Chef de Projet</option>
-              <option value="Développeur">Développeur</option>
-              <option value="Testeur">Testeur</option>
-              <option value="Maintenance Applicative et Spécialiste en Gestion de Projet">
-                Maintenance Applicative et Spécialiste en Gestion de Projet
-              </option>
-            </select>
-      <select
-        className="input-field"
-        value={poste}
-        onChange={(e) => setPoste(e.target.value)}
-      >
-        <option value="">Select poste</option>
-        <option value="Architecte Logiciel">Architecte Logiciel</option>
-        <option value="Analyste Fonctionnel">Analyste Fonctionnel</option>
-        <option value="Chef de Mission">Chef de Mission</option>
-        <option value="Chef de Projet">Chef de Projet</option>
-        <option value="Développeur">Développeur</option>
-        <option value="Testeur">Testeur</option>
-        <option value="Maintenance Applicative et Spécialiste en Gestion de Projet">Maintenance Applicative et Spécialiste en Gestion de Projet</option>
-      </select>
+              />
+              <select
+                className="input-field"
+                value={updateGrade}
+                onChange={(e) => setUpdateGrade(e.target.value)}
+              >
+                <option value="">Select Grade</option>
+                <option value="Ingénieur Principal">Ingénieur Principal</option>
+                <option value="Ingénieur Major">Ingénieur Major</option>
+                <option value="Technicien">Technicien</option>
+              </select>
+              <select
+                className="input-field"
+                value={updatePoste}
+                onChange={(e) => setUpdatePoste(e.target.value)}
+              >
+                <option value="">Select Poste</option>
+                <option value="Architecte Logiciel">Architecte Logiciel</option>
+                <option value="Analyste Fonctionnel">Analyste Fonctionnel</option>
+                <option value="Chef de Mission">Chef de Mission</option>
+                <option value="Chef de Projet">Chef de Projet</option>
+                <option value="Développeur">Développeur</option>
+                <option value="Testeur">Testeur</option>
+                <option value="Maintenance Applicative et Spécialiste en Gestion de Projet">
+                  Maintenance Applicative et Spécialiste en Gestion de Projet
+                </option>
+              </select>
               <input
                 className="input-field"
                 type="password"
@@ -302,22 +287,20 @@ const AddUser = () => {
               <p>Full Name: {selectedUser.fullname}</p>
               <p>Username: {selectedUser.username}</p>
               <p>Email: {selectedUser.email}</p>
-              <p>poste: {selectedUser.poste}</p>
+              <p>Poste: {selectedUser.poste}</p>
               <p>Phone: {selectedUser.phone}</p>
               <p>Grade: {selectedUser.grade}</p>
-             
-
             </div>
           </div>
         )}
 
         <div className="users-list">
-        {users.map((user) => (
-  <div key={user._id} className="user-card">
-    <h3>{user.fullname}</h3>
-    <p>{user.username}</p>
-    {user.image && <img src={user.image} alt="User" style={{ maxWidth: "100%", height: "auto" }} />}
-    <div className="button-container">
+          {users.map((user) => (
+            <div key={user._id} className="user-card">
+              <h3>{user.fullname}</h3>
+              <p>{user.username}</p>
+              {user.image && <img src={user.image} alt="User" style={{ maxWidth: "100%", height: "auto" }} />}
+              <div className="button-container">
                 <button
                   className="details-button"
                   onClick={() => {
@@ -340,13 +323,11 @@ const AddUser = () => {
                     setUpdatePhone(user.phone);
                     setUpdateImage(user.image);
                     setUpdatePoste(user.poste);
-                 
-
                   }}
                 >
                   Update
                 </button>
-                <button cssClass='e-primary' onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
               </div>
             </div>
           ))}

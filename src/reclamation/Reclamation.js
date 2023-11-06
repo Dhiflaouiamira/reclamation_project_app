@@ -3,38 +3,28 @@ import React, { useState, useEffect } from "react";
 import "./reclamation.css";
 import axios from 'axios';
 import Navbar from "../navbar/Navbar";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const AddReclamation = () => {
   const [titre, setTitre] = useState("");
   const [description, setDescription] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [reclamations, setReclamations] = useState([]);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateId, setUpdateId] = useState(null);
   const [updateTitre, setUpdateTitre] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
-  const [reclamations, setReclamations] = useState([]);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedReclamation, setSelectedReclamation] = useState(null);
 
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  
-  const fetchReclamations = async () => {
-    try {
-      const response = await fetch("http://localhost:3002/api/reclamations");
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        setReclamations(data);
-      }
-    } catch (error) {
-      console.error("Error fetching reclamations:", error);
-    }
+  const openModal = () => {
+    setShowModal(true);
   };
 
-  useEffect(() => {
-    fetchReclamations();
-  }, []);
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const handleAddReclamation = async () => {
     if (!titre || !description) {
@@ -95,13 +85,33 @@ const AddReclamation = () => {
     }
   };
 
-  const openModal = () => {
-    setShowModal(true);
+  const openUpdateModal = (reclamation) => {
+    setUpdateId(reclamation._id);
+    setUpdateTitre(reclamation.titre);
+    setUpdateDescription(reclamation.description);
+    setShowUpdateModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
+  const openDetailsModal = (reclamation) => {
+    setSelectedReclamation(reclamation);
+    setShowDetailsModal(true);
   };
+
+  const fetchReclamations = async () => {
+    try {
+      const response = await fetch("http://localhost:3002/api/reclamations");
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        setReclamations(data);
+      }
+    } catch (error) {
+      console.error("Error fetching reclamations:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReclamations();
+  }, []);
 
   return (
     <div>
@@ -112,12 +122,11 @@ const AddReclamation = () => {
           Add Reclamation
         </button>
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={closeModal}>
-                &times;
-              </span>
-              <h2>Add Reclamation</h2>
+          <Modal show={showModal} onHide={closeModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Reclamation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <input
                 className="input-field"
                 type="text"
@@ -138,16 +147,16 @@ const AddReclamation = () => {
               <button className="cancel-button" onClick={closeModal}>
                 Cancel
               </button>
-            </div>
-          </div>
+            </Modal.Body>
+          </Modal>
         )}
+
         {showUpdateModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={() => setShowUpdateModal(false)}>
-                &times;
-              </span>
-              <h2>Update Reclamation</h2>
+          <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Update Reclamation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <input
                 className="input-field"
                 type="text"
@@ -162,43 +171,38 @@ const AddReclamation = () => {
                 value={updateDescription}
                 onChange={(e) => setUpdateDescription(e.target.value)}
               />
-              <button className="update-reclamation-button" onClick={() => handleUpdateReclamation(updateId)}>Update</button>
-            </div>
-          </div>
+              <button className="update-reclamation-button" onClick={() => handleUpdateReclamation(updateId)}>
+                Update
+              </button>
+              <button className="cancel-button" onClick={() => setShowUpdateModal(false)}>
+                Cancel
+              </button>
+            </Modal.Body>
+          </Modal>
         )}
+
         {showDetailsModal && selectedReclamation && (
-          <div className="modal">
-            <div className="modal-content">
-              <span className="close" onClick={() => setShowDetailsModal(false)}>
-                &times;
-              </span>
-              <h2>Details Reclamation</h2>
-              <p>Title : {selectedReclamation.titre}</p>
-              <p>description : {selectedReclamation.description}</p>
-            </div>
-          </div>
+          <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Details Reclamation</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Title: {selectedReclamation.titre}</p>
+              <p>Description: {selectedReclamation.description}</p>
+            </Modal.Body>
+          </Modal>
         )}
+
         <div className="reclamations-list">
           {reclamations.map((reclamation) => (
             <div key={reclamation._id} className="reclamation-card">
               <h3>{reclamation.titre}</h3>
               <p>{reclamation.dateCreation}</p>
               <div className="button-container">
-                <button className="details-button" onClick={() => {
-                  setShowDetailsModal(true);
-                  setSelectedReclamation(reclamation);
-                }}>
+                <button className="details-button" onClick={() => openDetailsModal(reclamation)}>
                   Details
                 </button>
-                <button
-                  className="update-button"
-                  onClick={() => {
-                    setShowUpdateModal(true);
-                    setUpdateId(reclamation._id);
-                    setUpdateTitre(reclamation.titre);
-                    setUpdateDescription(reclamation.description);
-                  }}
-                >
+                <button className="update-button" onClick={() => openUpdateModal(reclamation)}>
                   Update
                 </button>
                 <button onClick={() => handleDeleteReclamation(reclamation._id)}>Delete</button>
@@ -211,4 +215,4 @@ const AddReclamation = () => {
   );
 };
 
-export default AddReclamation;
+export default AddReclamation

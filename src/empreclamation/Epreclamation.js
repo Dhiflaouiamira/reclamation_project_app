@@ -1,9 +1,13 @@
+// Reclamations.js
+
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import "./epreclamation.css";
+import { NavLink } from "react-router-dom";
 
 const Reclamations = () => {
   const [reclamations, setReclamations] = useState([]);
@@ -35,7 +39,7 @@ const Reclamations = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3002/api/reclamations', {
+      const response = await fetch(`http://localhost:3002/api/reclamations/${user._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -60,21 +64,54 @@ const Reclamations = () => {
 
   return (
     <div>
-      <h2>Reclamations for the Logged-In User</h2>
-      {reclamations.map((reclamation, index) => (
-        <Card key={index} style={{ width: '18rem', marginBottom: '1rem' }}>
-          <Card.Body>
-            <Card.Title>{reclamation.titre}</Card.Title>
-            <Card.Text>{reclamation.description}</Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
-      <button onClick={handleShow}>Add Reclamation</button> {/* Example button to trigger the modal */}
+    <nav className="navbar-container">
+    <NavLink to="/homeemp" className="navbar-link">
+  Home
+</NavLink>
+<NavLink to="/epreclamation" className="navbar-link">
+  Reclamations
+</NavLink>
+
+<NavLink to="/" className="navbar-link">
+  Logout
+</NavLink>
+</nav>
+<button className="add-button" onClick={handleShow}>
+        Add Reclamation
+      </button>
+    <div className="reclamations-container">
+    <h2>
+        Reclamations of
+        {' '}
+        <span style={{ color: 'red' }}>{user.email}</span>
+      </h2>
+      <div className="reclamation-row-container">
+        {reclamations.map((reclamation, index) => {
+          if (index % 5 === 0) {
+            return (
+              <div key={index} className="reclamation-row">
+                {reclamations.slice(index, index + 5).map((rec, i) => (
+                  <Card key={i} className="reclamation-card">
+                    <Card.Body>
+                      <Card.Title>Titre : {rec.titre}</Card.Title>
+                      <Card.Text>Description : {rec.description}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                ))}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <button className="add-button" onClick={handleShow}>
+        Add Reclamation
+      </button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="modal-header">
           <Modal.Title>Add Reclamation</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="modal-body">
           <Form.Group controlId="formTitre">
             <Form.Label>Titre</Form.Label>
             <Form.Control
@@ -95,15 +132,16 @@ const Reclamations = () => {
             />
           </Form.Group>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+        <Modal.Footer className="modal-footer">
+          <Button variant="secondary" onClick={handleClose} className="close-button">
             Close
           </Button>
-          <Button variant="primary" onClick={addReclamation}>
+          <Button variant="primary" onClick={addReclamation} className="save-button">
             Save Reclamation
           </Button>
         </Modal.Footer>
       </Modal>
+    </div>
     </div>
   );
 };
